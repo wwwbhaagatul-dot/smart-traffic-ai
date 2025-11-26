@@ -1,0 +1,35 @@
+<script>
+async function uploadAndDetect() {
+  // Step 1: Get the uploaded image
+  const fileInput = document.getElementById("imageUpload");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Please choose an image first!");
+    return;
+  }
+
+  // Step 2: Send the image to backend
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const response = await fetch("http://127.0.0.1:5000/detect", {
+    method: "POST",
+    body: formData
+  });
+
+  // Step 3: Get the result back
+  const result = await response.json();
+
+  // Step 4: Show the vehicle counts
+  document.getElementById("vehicleCounts").textContent = JSON.stringify(result.vehicle_counts, null, 2);
+
+  // Step 5: Show the detected image
+  const imageName = result.annotated_image_path.split("\\").pop(); // take the last part of path
+  const imageUrl = "http://127.0.0.1:5000/uploads/" + imageName;
+
+  const detectedImage = document.getElementById("detectedImage");
+  detectedImage.src = imageUrl;
+  detectedImage.style.display = "block";
+}
+</script>

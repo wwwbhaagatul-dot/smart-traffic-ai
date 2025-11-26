@@ -1,0 +1,30 @@
+// URL of your backend FastAPI server
+const API_BASE_URL = "http://127.0.0.1:8000";
+
+// Fetch traffic count
+async function getTrafficCount() {
+    const response = await fetch(`${API_BASE_URL}/traffic_count`);
+    const data = await response.json();
+    document.getElementById("trafficCount").innerText = data.count;
+}
+
+// Fetch signal status
+async function getSignalStatus() {
+    const response = await fetch(`${API_BASE_URL}/signal_status`);
+    const data = await response.json();
+    document.getElementById("signalStatus").innerText = data.status;
+}
+
+// Fetch alerts
+async function getAlerts() {
+    const response = await fetch(`${API_BASE_URL}/alerts`);
+    const data = await response.json();
+    document.getElementById("alerts").innerText = data.alert;
+}
+
+// Call all functions every 3 seconds
+setInterval(() => {
+    getTrafficCount();
+    getSignalStatus();
+    getAlerts();
+}, 3000);
